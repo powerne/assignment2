@@ -18,11 +18,11 @@ const scoreSound = new Audio('../sounds/scoreSound.wav');
 const wallHitSound = new Audio('../sounds/wallHitSound.wav');
 
 //Variables
-const netWidth = 4;
+const netWidth = 8;
 const netHeight = canvas.height;
 
-const paddleWidth = 8;
-const paddleHeight = 100;
+const paddleWidth = 5;
+const paddleHeight = 90;
 
 let upArrowPressed = false;
 let downArrowPressed = false;
@@ -43,7 +43,8 @@ const user = {
     width: paddleWidth,
     height: paddleHeight,
     color: '#00FFFF',
-    score: 0
+    score: 0,
+    scoreText: "User SCORE!"
 };
 
 //AI Paddle Object
@@ -53,7 +54,8 @@ const ai = {
     width: paddleWidth,
     height: paddleHeight,
     color: '#FF0000',
-    score: 0
+    score: 0,
+    scoreText: "AI SCORE!"
 };
     
 //Ball Object
@@ -75,12 +77,14 @@ function drawNet() {
 
 function drawScore(x, y, score) {
     ctx.fillStyle = '#fe217f';
-    ctx.font = '42px serif';
+    ctx.font = 'bold 60px serif';
     ctx.fillText(score, x, y);
 }
 
-function drawMessage() {
-
+function drawMessage(x, y, message) {
+    ctx.fillStyle = '#fe217f';
+    ctx.font = '50px Arial';
+    ctx.fillText(message, x, y);
 }
     
 function drawPaddle(x, y, width, height, color) {
@@ -165,6 +169,7 @@ function update() {
     if (ball.x + ball.radius >= canvas.width) {
         scoreSound.play();
         user.score += 1;
+        drawMessage(2 * canvas.width / 6, 2 * canvas.height / 6, user.scoreText);
         reset();
     }
     
@@ -172,6 +177,7 @@ function update() {
     if (ball.x - ball.radius <= 0) {
         scoreSound.play();
         ai.score += 1;
+        drawMessage(5 * canvas.width / 6, 2 * canvas.height / 6, ai.scoreText);
         reset();
     }
 
@@ -207,19 +213,20 @@ function update() {
 
         // increase ball speed
         ball.speed += 0.2;
+    }
 
-        if(user.score >= 20) {
-            alert("User WINS!");
-        }
+    //Check total scores
+    if(user.score >= 20) {
+        alert("User WINS!");
+    }
 
-        if(ai.score >= 20) {
-            alert("AI WINS... Respect our machine overlords")
-        }
+    if(ai.score >= 20) {
+        alert("AI WINS... Respect our machine overlords")
     }
 }
 
 function render() {
-    ctx.fillStyle = "#000";
+    ctx.fillStyle = "#202245";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     //Display Net
     drawNet();
